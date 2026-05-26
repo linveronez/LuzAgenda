@@ -4,8 +4,10 @@
   --yellow: #f8ba10;
   --ink: #152033;
   --muted: #667085;
-  --line: #d9e2ef;
+  --line: #c6d3e3;
+  --line-strong: #9fb3cc;
   --soft: #f5f8fc;
+  --field: #fbfdff;
   --green: #128c4a;
 }
 
@@ -75,9 +77,9 @@ body {
 
 .info-card, .form-panel, .success-panel, .table-panel, .stat {
   background: #fff;
-  border: 1px solid var(--line);
+  border: 1px solid #b9c9de;
   border-radius: 8px;
-  box-shadow: 0 12px 32px rgba(6, 43, 99, .06);
+  box-shadow: 0 10px 24px rgba(6, 43, 99, .08), 0 1px 2px rgba(6, 43, 99, .08);
 }
 .info-card { min-height: 118px; padding: 22px; }
 .info-card strong { color: var(--blue); display: block; font-size: 1.1rem; margin-bottom: 8px; }
@@ -85,11 +87,31 @@ body {
 
 .page-section { padding: 48px 0 64px; }
 .narrow { max-width: 860px; }
-.form-panel, .success-panel, .table-panel { padding: 24px; }
+.form-panel, .success-panel, .table-panel { padding: 28px; }
+.form-label {
+  color: #0f2442;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
 .form-control, .form-select {
-  border-color: var(--line);
+  background-color: var(--field);
+  border: 1px solid var(--line);
   border-radius: 8px;
+  color: var(--ink);
   min-height: 46px;
+  padding: 10px 12px;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+}
+.form-control:hover, .form-select:hover {
+  border-color: var(--line-strong);
+}
+.form-control:focus, .form-select:focus {
+  background-color: #fff;
+  border-color: #4e8fe8;
+  box-shadow: 0 0 0 4px rgba(78, 143, 232, .18);
+}
+textarea.form-control {
+  min-height: 96px;
 }
 
 .autocomplete-list {
@@ -97,8 +119,8 @@ body {
   z-index: 5;
 }
 .autocomplete-list button {
-  background: #fff;
-  border: 1px solid var(--line);
+  background: var(--field);
+  border: 1px solid var(--line-strong);
   border-top: 0;
   color: var(--blue);
   display: block;
@@ -108,7 +130,7 @@ body {
 }
 
 .companion-row {
-  background: #f8fbff;
+  background: #f4f8fd;
   border: 1px solid var(--line);
   border-radius: 8px;
   display: grid;
@@ -132,7 +154,7 @@ body {
 .slot input { position: absolute; opacity: 0; pointer-events: none; }
 .slot span {
   background: #e8f8ef;
-  border: 1px solid #a7dfbd;
+  border: 1px solid #79c998;
   border-radius: 8px;
   color: #12613a;
   display: block;
@@ -140,9 +162,9 @@ body {
   padding: 10px;
   text-align: center;
 }
-.slot.one span { background: #fff5d6; border-color: #f3c65f; color: #7a5000; }
+.slot.one span { background: #fff5d6; border-color: #dda935; color: #7a5000; }
 .slot.full span { background: #eceff3; border-color: #d0d5dd; color: #667085; cursor: not-allowed; }
-.slot input:checked + span { outline: 3px solid rgba(6, 43, 99, .25); border-color: var(--blue); }
+.slot input:checked + span { outline: 3px solid rgba(6, 43, 99, .22); border-color: var(--blue); }
 
 .summary {
   display: grid;
