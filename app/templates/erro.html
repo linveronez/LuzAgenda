@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-section">
+  <div class="container narrow">
+    <div class="form-panel">
+      <h1>Não foi possível continuar</h1>
+      <p>{{ mensagem }}</p>
+      <div class="d-flex flex-wrap gap-2">
+        {% if whatsapp %}<a class="btn btn-success" href="{{ whatsapp }}" target="_blank">Falar pelo WhatsApp</a>{% endif %}
+        <a class="btn btn-primary" href="{{ url_for('main.home') }}">Voltar ao início</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

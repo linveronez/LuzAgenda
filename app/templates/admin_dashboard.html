@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-section">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1>Dashboard</h1>
+      <div><a class="btn btn-outline-primary" href="{{ url_for('main.admin_pacientes') }}">Pacientes</a> <a class="btn btn-outline-secondary" href="{{ url_for('main.admin_logout') }}">Sair</a></div>
+    </div>
+    <div class="stats-grid">
+      <a class="stat" href="{{ url_for('main.admin_pacientes', status='ativo') }}"><span>Pacientes ativos</span><strong>{{ stats.pacientes }}</strong></a>
+      <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='visita', inicio=friday.isoformat(), fim=sunday.isoformat()) }}"><span>Visitas no FDS</span><strong>{{ stats.visitas_fds }}</strong></a>
+      <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.qua.isoformat()) }}"><span>Ligações quarta</span><strong>{{ stats.ligacoes_qua }}</strong></a>
+      <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.qui.isoformat()) }}"><span>Ligações quinta</span><strong>{{ stats.ligacoes_qui }}</strong></a>
+      <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.sex.isoformat()) }}"><span>Ligações sexta</span><strong>{{ stats.ligacoes_sex }}</strong></a>
+    </div>
+    <div class="row g-3 mt-2">
+      <div class="col-lg-6">
+        <div class="table-panel">
+          <h2>Visitas</h2>
+          {% for v in visitas %}
+          <div class="admin-item">
+            <span>{{ v.data_visita.strftime("%d/%m") }} {{ v.horario_inicio.strftime("%H:%M") }} - {{ v.paciente.nome_completo }} - {{ v.status }}</span>
+            <form method="post" action="{{ url_for('main.admin_cancelar', tipo='visita', item_id=v.id) }}"><button class="btn btn-sm btn-outline-danger">Cancelar</button></form>
+          </div>
+          {% else %}<p>Nenhuma visita.</p>{% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="table-panel">
+          <h2>Ligações</h2>
+          {% for l in ligacoes %}
+          <div class="admin-item">
+            <span>{{ l.data_ligacao.strftime("%d/%m") }} {{ l.horario }} - {{ l.paciente.nome_completo }} - {{ l.status }}</span>
+            <form method="post" action="{{ url_for('main.admin_cancelar', tipo='ligacao', item_id=l.id) }}"><button class="btn btn-sm btn-outline-danger">Cancelar</button></form>
+          </div>
+          {% else %}<p>Nenhuma ligação.</p>{% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

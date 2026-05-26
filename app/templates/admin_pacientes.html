@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-section">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1>Pacientes</h1>
+      <a class="btn btn-outline-primary" href="{{ url_for('main.admin_dashboard') }}">Dashboard</a>
+    </div>
+    <form method="post" class="form-panel mb-3">
+      <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">Nome completo</label><input name="nome_completo" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Data de entrada</label><input type="date" name="data_entrada" min="2025-01-01" max="{{ hoje.isoformat() }}" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Status</label><select name="status" class="form-select"><option value="ativo">Ativo</option><option value="inativo">Inativo</option></select></div>
+      </div>
+      <button class="btn btn-primary mt-3">Cadastrar</button>
+    </form>
+    <form method="get" class="form-panel mb-3 patient-filter">
+      <input name="q" value="{{ termo }}" class="form-control" placeholder="Buscar paciente por nome">
+      <select name="status" class="form-select">
+        <option value="">Todos</option>
+        <option value="ativo" {% if status == "ativo" %}selected{% endif %}>Ativos</option>
+        <option value="inativo" {% if status == "inativo" %}selected{% endif %}>Inativos</option>
+      </select>
+      <button class="btn btn-primary">Filtrar</button>
+    </form>
+    <div class="table-panel">
+      {% for p in pacientes %}
+      <div class="patient-row">
+        <div><strong>{{ p.nome_completo }}</strong><span>{{ p.data_entrada.strftime("%d/%m/%Y") }} - {{ p.total_visitas }} visita(s), {{ p.total_ligacoes }} ligação(ões)</span></div>
+        <form method="post" action="{{ url_for('main.admin_paciente_status', paciente_id=p.id) }}" class="d-flex gap-2">
+          <select name="status" class="form-select form-select-sm"><option value="ativo" {% if p.status == "ativo" %}selected{% endif %}>Ativo</option><option value="inativo" {% if p.status == "inativo" %}selected{% endif %}>Inativo</option></select>
+          <button class="btn btn-sm btn-outline-primary">Salvar</button>
+        </form>
+      </div>
+      {% else %}<p>Nenhum paciente encontrado.</p>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,16 @@
+{
+  "name": "LuzAgenda",
+  "short_name": "LuzAgenda",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f8fc",
+  "theme_color": "#062b63",
+  "icons": [
+    {
+      "src": "/static/img/logo-luz-da-vida.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

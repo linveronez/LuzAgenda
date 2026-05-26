@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Agendar visita - LuzAgenda{% endblock %}
+{% block content %}
+{% set titulo = "Informações importantes sobre a visita" %}
+{% set intro = "Antes de continuar, leia as orientações da instituição." %}
+{% set itens = [
+"Visitantes podem trazer comida, lanche, refrigerante, sobremesa, doce e afins, devendo ser consumidos durante a visita.",
+"Caso sobre algo ou tragam itens em grande quantidade para consumo posterior, será solicitado que retornem com os itens, ou, se em pequena quantidade, será liberado ao acolhido consumir no mesmo dia.",
+"Não é possível estocar alimentos ou guloseimas devido às normas da Vigilância Sanitária.",
+"Agradecemos a compreensão!"
+] %}
+{% include "_modal_info.html" %}
+<section class="page-section">
+  <div class="container narrow">
+    <h1>Agendar visita</h1>
+    <form method="post" class="form-panel" data-schedule-form data-schedule-type="visita">
+      <input type="hidden" name="token_atual" data-token-field data-token-type="visita">
+      <input type="hidden" name="paciente_id" data-paciente-id required>
+      <label class="form-label">Acolhido</label>
+      <input class="form-control" data-autocomplete placeholder="Digite o nome do acolhido" required>
+      <div class="autocomplete-list"></div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-4"><label class="form-label">Data</label><select name="data_visita" class="form-select" required>{% for data in datas %}<option value="{{ data.isoformat() }}">{{ data.strftime("%d/%m/%Y") }}</option>{% endfor %}</select></div>
+        <div class="col-md-4"><label class="form-label">Início</label><select name="horario_inicio" class="form-select" required>{% for horario in horarios %}<option value="{{ horario }}">{{ horario }}</option>{% endfor %}</select></div>
+        <div class="col-md-4"><label class="form-label">Duração</label><select name="duracao" class="form-select"><option value="2">2 horas</option><option value="3">3 horas</option><option value="4">4 horas</option></select></div>
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-5"><label class="form-label">Visitante</label><input name="visitante_nome" class="form-control" required></div>
+        <div class="col-md-4"><label class="form-label">Telefone</label><input name="visitante_telefone" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Parentesco</label><select name="parentesco" class="form-select" required>{% for item in parentescos %}<option value="{{ item }}">{{ item }}</option>{% endfor %}</select></div>
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between align-items-center">
+        <strong>Acompanhantes</strong>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-primary" type="button" data-add-companion="adulto">Adulto</button>
+          <button class="btn btn-sm btn-outline-primary" type="button" data-add-companion="crianca">Criança</button>
+        </div>
+      </div>
+      <p class="small text-muted mt-2 mb-0">Limite: visitante + até 4 acompanhantes adultos, e até 2 crianças.</p>
+      <div data-companions class="mt-2"></div>
+      <label class="form-label mt-3">Observações</label>
+      <textarea name="observacoes" class="form-control" rows="3"></textarea>
+      <button class="btn btn-primary btn-lg w-100 mt-4">Confirmar visita</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

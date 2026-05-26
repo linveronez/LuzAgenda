@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-section">
+  <div class="container narrow">
+    <div class="success-panel">
+      <p class="eyebrow">Agendamento confirmado</p>
+      <h1>{{ "Visita" if tipo == "visita" else "Ligação" }} registrada com sucesso</h1>
+      <p>Guarde este navegador para acessar, editar ou cancelar seu agendamento depois.</p>
+      <dl class="summary">
+        <dt>Acolhido</dt><dd>{{ item.paciente.nome_completo }}</dd>
+        {% if tipo == "visita" %}
+        <dt>Responsável</dt><dd>{{ item.responsavel_nome }} - {{ item.responsavel_telefone }}</dd>
+        <dt>Data</dt><dd>{{ item.data_visita.strftime("%d/%m/%Y") }} das {{ item.horario_inicio.strftime("%H:%M") }} às {{ item.horario_fim.strftime("%H:%M") }}</dd>
+        <dt>Visitantes</dt><dd>{{ item.total_adultos }} adulto(s) e {{ item.total_criancas }} criança(s)</dd>
+        {% else %}
+        <dt>Solicitante</dt><dd>{{ item.nome_solicitante }} - {{ item.telefone_solicitante }}</dd>
+        <dt>Data</dt><dd>{{ item.data_ligacao.strftime("%d/%m/%Y") }} às {{ item.horario }}</dd>
+        <dt>Celular atribuído</dt><dd>Cel Acolhidos {{ item.numero_celular }}</dd>
+        {% endif %}
+      </dl>
+      <div class="d-flex flex-wrap gap-2">
+        {% if tipo == "visita" %}
+        <a class="btn btn-success" href="{{ links.ct }}" target="_blank">Enviar para WhatsApp da CT</a>
+        {% else %}
+        <a class="btn btn-success" href="{{ links.atribuido }}" target="_blank">Avisar celular atribuído</a>
+        <a class="btn btn-outline-success" href="{{ links.cel1 }}" target="_blank">Cel Acolhidos 1</a>
+        <a class="btn btn-outline-success" href="{{ links.cel2 }}" target="_blank">Cel Acolhidos 2</a>
+        {% endif %}
+        <a class="btn btn-outline-primary" href="{{ url_for('main.meu_agendamento', token=token) }}">Meu agendamento</a>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  localStorage.setItem("luzagenda_{{ tipo }}_token", "{{ token }}");
+  localStorage.setItem("luzagenda_token", "{{ token }}");
+</script>
+{% endblock %}

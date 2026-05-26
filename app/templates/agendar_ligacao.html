@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Agendar ligação - LuzAgenda{% endblock %}
+{% block content %}
+{% set titulo = "Informações importantes sobre a ligação" %}
+{% set intro = "Cada acolhido possui 20 minutos semanais para ligações agendadas." %}
+{% set itens = ["Ligações acontecem quarta, quinta e sexta, das 10h às 18h.", "Cada horário comporta até dois agendamentos.", "O sistema indica o celular disponível na confirmação."] %}
+{% include "_modal_info.html" %}
+<section class="page-section">
+  <div class="container narrow">
+    <h1>Agendar ligação</h1>
+    <form method="post" class="form-panel" data-schedule-form data-schedule-type="ligacao">
+      <input type="hidden" name="token_atual" data-token-field data-token-type="ligacao">
+      <input type="hidden" name="paciente_id" data-paciente-id required>
+      <label class="form-label">Acolhido</label>
+      <input class="form-control" data-autocomplete placeholder="Digite o nome do acolhido" required>
+      <div class="autocomplete-list"></div>
+      <label class="form-label mt-3">Data da ligação</label>
+      <select name="data_ligacao" class="form-select" data-call-date required>
+        <option value="">Selecione uma data</option>
+        {% for data in datas %}
+        <option value="{{ data.isoformat() }}">{{ data.strftime("%d/%m/%Y") }}</option>
+        {% endfor %}
+      </select>
+      <label class="form-label mt-3">Horário</label>
+      <div class="slot-grid" data-slot-grid>
+        {% for slot in slots %}
+        <label class="slot"><input type="radio" name="horario" value="{{ slot }}" required><span>{{ slot }}</span></label>
+        {% endfor %}
+      </div>
+      <div class="row g-3 mt-1">
+        <div class="col-md-5"><label class="form-label">Solicitante</label><input name="nome_solicitante" class="form-control" required></div>
+        <div class="col-md-4"><label class="form-label">Telefone</label><input name="telefone_solicitante" class="form-control" required></div>
+        <div class="col-md-3"><label class="form-label">Parentesco</label><select name="grau_parentesco" class="form-select" required>{% for item in parentescos %}<option value="{{ item }}">{{ item }}</option>{% endfor %}</select></div>
+      </div>
+      <button class="btn btn-primary btn-lg w-100 mt-4">Confirmar ligação</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

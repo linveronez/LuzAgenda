@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-section">
+  <div class="container narrow">
+    <h1>Meu agendamento</h1>
+    {% if not token %}
+    <div class="form-panel text-center">
+      <p>Buscando agendamento salvo neste navegador...</p>
+      <a class="btn btn-primary" href="{{ url_for('main.home') }}">Voltar ao início</a>
+    </div>
+    <script>
+      const visita = localStorage.getItem("luzagenda_visita_token");
+      const ligacao = localStorage.getItem("luzagenda_ligacao_token");
+      const token = visita || ligacao || localStorage.getItem("luzagenda_token");
+      const tipo = visita ? "visita" : ligacao ? "ligacao" : "";
+      if (token) location.href = "{{ url_for('main.meu_agendamento') }}?token=" + encodeURIComponent(token) + (tipo ? "&tipo=" + tipo : "");
+    </script>
+    {% elif not item %}
+    <div class="form-panel"><p>Nenhum agendamento ativo encontrado para este token.</p></div>
+    {% else %}
+    <div class="success-panel">
+      <p class="eyebrow">{{ tipo }}</p>
+      <h2>{{ item.paciente.nome_completo }}</h2>
+      {% if tipo == "visita" %}
+      <p>{{ item.data_visita.strftime("%d/%m/%Y") }} das {{ item.horario_inicio.strftime("%H:%M") }} às {{ item.horario_fim.strftime("%H:%M") }}</p>
+      {% else %}
+      <p>{{ item.data_ligacao.strftime("%d/%m/%Y") }} às {{ item.horario }} - Cel Acolhidos {{ item.numero_celular }}</p>
+      {% endif %}
+      <form method="post" action="{{ url_for('main.cancelar', tipo=tipo, token=token) }}">
+        <button class="btn btn-outline-danger">Cancelar agendamento</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

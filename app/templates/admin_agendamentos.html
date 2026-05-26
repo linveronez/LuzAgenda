@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-section">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h1>{{ "Visitas" if tipo == "visita" else "Ligações" }}</h1>
+      <a class="btn btn-outline-primary" href="{{ url_for('main.admin_dashboard') }}">Dashboard</a>
+    </div>
+    <div class="table-panel">
+      {% for item in items %}
+      <div class="admin-item">
+        {% if tipo == "visita" %}
+        <span>{{ item.data_visita.strftime("%d/%m/%Y") }} {{ item.horario_inicio.strftime("%H:%M") }} - {{ item.paciente.nome_completo }} - {{ item.responsavel_nome }}</span>
+        <form method="post" action="{{ url_for('main.admin_cancelar', tipo='visita', item_id=item.id) }}"><button class="btn btn-sm btn-outline-danger">Cancelar</button></form>
+        {% else %}
+        <span>{{ item.data_ligacao.strftime("%d/%m/%Y") }} {{ item.horario }} - {{ item.paciente.nome_completo }} - Cel {{ item.numero_celular }}</span>
+        <form method="post" action="{{ url_for('main.admin_cancelar', tipo='ligacao', item_id=item.id) }}"><button class="btn btn-sm btn-outline-danger">Cancelar</button></form>
+        {% endif %}
+      </div>
+      {% else %}<p>Nenhum agendamento encontrado para o filtro.</p>{% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
