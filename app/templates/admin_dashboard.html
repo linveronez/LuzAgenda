@@ -9,9 +9,15 @@
     <div class="stats-grid">
       <a class="stat" href="{{ url_for('main.admin_pacientes', status='ativo') }}"><span>Pacientes ativos</span><strong>{{ stats.pacientes }}</strong></a>
       <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='visita', inicio=friday.isoformat(), fim=sunday.isoformat()) }}"><span>Visitas no FDS</span><strong>{{ stats.visitas_fds }}</strong></a>
+      {% if stats.ligacoes_enabled %}
       <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.qua.isoformat()) }}"><span>Ligações quarta</span><strong>{{ stats.ligacoes_qua }}</strong></a>
       <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.qui.isoformat()) }}"><span>Ligações quinta</span><strong>{{ stats.ligacoes_qui }}</strong></a>
       <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.sex.isoformat()) }}"><span>Ligações sexta</span><strong>{{ stats.ligacoes_sex }}</strong></a>
+      {% else %}
+      <div class="stat stat-muted"><span>Ligações quarta</span><strong>V3</strong><small>Em desenvolvimento</small></div>
+      <div class="stat stat-muted"><span>Ligações quinta</span><strong>V3</strong><small>Em desenvolvimento</small></div>
+      <div class="stat stat-muted"><span>Ligações sexta</span><strong>V3</strong><small>Em desenvolvimento</small></div>
+      {% endif %}
     </div>
     <div class="row g-3 mt-2">
       <div class="col-lg-6">

@@ -10,17 +10,22 @@ def create_app():
     load_dotenv()
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-secret")
-    database_url = os.getenv("DATABASE_URL", "sqlite:///luzagenda.db")
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        if os.getenv("RENDER"):
+            raise RuntimeError("DATABASE_URL precisa estar configurada no Render para usar PostgreSQL persistente.")
+        database_url = "sqlite:///luzagenda.db"
     if database_url.startswith("postgres://"):
-        database_url = database_url.replace("postgres://", "postgresql+psycopg://", 1)
+        database_url = database_url.replace("postgres://", "postgresql+psycopg2://", 1)
     elif database_url.startswith("postgresql://"):
-        database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
+        database_url = database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["ADMIN_PASSWORD"] = os.getenv("ADMIN_PASSWORD", "ctluzdavida2")
     app.config["CT_WHATSAPP"] = os.getenv("CT_WHATSAPP", "5511947395960")
     app.config["CEL_ACOLHIDOS_1"] = os.getenv("CEL_ACOLHIDOS_1", "5511939219318")
     app.config["CEL_ACOLHIDOS_2"] = os.getenv("CEL_ACOLHIDOS_2", "5511992588976")
+    app.config["ENABLE_LIGACOES"] = os.getenv("ENABLE_LIGACOES", "false").lower() == "true"
 
     db.init_app(app)
 

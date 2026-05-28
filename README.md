@@ -9,7 +9,7 @@ Acesse em produção: **https://luz-agenda.onrender.com**
 ## O que o sistema faz
 
 - Agendamento público de **visitas** (sexta, sábado e domingo) sem necessidade de login
-- Agendamento público de **ligações** (quarta, quinta e sexta) em slots de 20 minutos
+- Módulo de **ligações** preservado no roadmap, bloqueado para liberação na V3
 - Controle automático de **carência**, **vagas por dia**, **limite de acompanhantes** e **cota semanal de ligações**
 - **Painel administrativo** protegido por senha para gestão de pacientes e agendamentos
 - **Notificação via WhatsApp** com mensagem pré-formatada ao confirmar agendamento
@@ -64,7 +64,8 @@ Em desenvolvimento, o banco SQLite é criado automaticamente em `instance/luzage
 SECRET_KEY=troque-por-chave-segura
 ADMIN_PASSWORD=sua-senha-admin
 DATABASE_URL=sqlite:///luzagenda.db       # dev
-# DATABASE_URL=postgresql://...           # produção
+# DATABASE_URL=postgresql://...           # produção obrigatória no Render
+ENABLE_LIGACOES=false                     # V3
 CT_WHATSAPP=5511947395960                 # número da CT (visitas)
 CEL_ACOLHIDOS_1=5511939219318            # celular 1 (ligações)
 CEL_ACOLHIDOS_2=5511992588976            # celular 2 (ligações)
@@ -122,7 +123,11 @@ LuzAgenda/
   - Se os 30 dias caírem em dia de semana, libera o final de semana anterior (mínimo 27 dias)
 - Lotação: redireciona para WhatsApp da CT com mensagem pronta
 
-### Ligações
+### Ligações (V3)
+- Módulo temporariamente bloqueado na interface pública
+- Cards do painel administrativo exibem o status de desenvolvimento
+
+Regras planejadas:
 - Dias: quarta, quinta e sexta
 - Slots de 20 min: 10:00, 10:20, 10:40 … 17:40
 - 2 números disponíveis por slot (Cel Acolhidos 1 e 2)
@@ -139,6 +144,7 @@ LuzAgenda/
 4. Start command: `gunicorn wsgi:app`
 5. Adicione as variáveis de ambiente no painel do Render
 6. Provisione um PostgreSQL no Render e copie a `DATABASE_URL`
+7. Confirme que a variável `DATABASE_URL` está configurada; sem ela, o app não inicia no Render para evitar SQLite efêmero
 
 ---
 
@@ -152,6 +158,7 @@ LuzAgenda/
 - Tela de busca de agendamento por telefone do responsável
 
 ### V3
+- Liberação do módulo de ligações
 - Níveis de acesso (admin / equipe terapêutica)
 - Lembrete automático 24h antes via WhatsApp
 - Controle granular da cota de 20 minutos por ligação

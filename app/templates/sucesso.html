@@ -9,7 +9,7 @@
       <dl class="summary">
         <dt>Acolhido</dt><dd>{{ item.paciente.nome_completo }}</dd>
         {% if tipo == "visita" %}
-        <dt>Responsável</dt><dd>{{ item.responsavel_nome }} - {{ item.responsavel_telefone }}</dd>
+        <dt>Responsável</dt><dd>{{ item.responsavel_nome }}{% if item.responsavel_telefone %} - {{ item.responsavel_telefone }}{% endif %}</dd>
         <dt>Data</dt><dd>{{ item.data_visita.strftime("%d/%m/%Y") }} das {{ item.horario_inicio.strftime("%H:%M") }} às {{ item.horario_fim.strftime("%H:%M") }}</dd>
         <dt>Visitantes</dt><dd>{{ item.total_adultos }} adulto(s) e {{ item.total_criancas }} criança(s)</dd>
         {% else %}

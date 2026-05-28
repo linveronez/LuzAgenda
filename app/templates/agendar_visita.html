@@ -25,9 +25,8 @@
         <div class="col-md-4"><label class="form-label">Duração</label><select name="duracao" class="form-select"><option value="2">2 horas</option><option value="3">3 horas</option><option value="4">4 horas</option></select></div>
       </div>
       <div class="row g-3 mt-1">
-        <div class="col-md-5"><label class="form-label">Visitante</label><input name="visitante_nome" class="form-control" required></div>
-        <div class="col-md-4"><label class="form-label">Telefone</label><input name="visitante_telefone" class="form-control" required></div>
-        <div class="col-md-3"><label class="form-label">Parentesco</label><select name="parentesco" class="form-select" required>{% for item in parentescos %}<option value="{{ item }}">{{ item }}</option>{% endfor %}</select></div>
+        <div class="col-md-8"><label class="form-label">Visitante responsável</label><input name="visitante_nome" class="form-control" required></div>
+        <div class="col-md-4"><label class="form-label">Parentesco</label><select name="parentesco" class="form-select" required>{% for item in parentescos %}<option value="{{ item }}">{{ item }}</option>{% endfor %}</select></div>
       </div>
       <hr>
       <div class="d-flex justify-content-between align-items-center">

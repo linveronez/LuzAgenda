@@ -63,6 +63,24 @@ def active_schedule_for_token(token, tipo=None):
     return None, None
 
 
+def ligacoes_enabled():
+    return current_app.config.get("ENABLE_LIGACOES", False)
+
+
+def active_future_visit_for_patient(paciente_id):
+    query = AgendamentoVisita.query.filter(
+        AgendamentoVisita.paciente_id == paciente_id,
+        AgendamentoVisita.status == "confirmado",
+        AgendamentoVisita.data_visita >= date.today(),
+    )
+    return query.order_by(AgendamentoVisita.data_visita, AgendamentoVisita.horario_inicio).first()
+
+
+def companion_names(agendamento):
+    nomes = [item.get("nome") for item in (agendamento.acompanhantes or []) if item.get("nome")]
+    return ", ".join(nomes) if nomes else "Sem acompanhantes informados"
+
+
 @bp.get("/")
 def home():
     return render_template("home.html")
@@ -90,6 +108,8 @@ def api_visitas_disponibilidade():
 
 @bp.get("/api/ligacoes/slots")
 def api_ligacoes_slots():
+    if not ligacoes_enabled():
+        return jsonify({"erro": "Modulo de ligacoes planejado para a V3."}), 503
     selected = parse_date(request.args["data"])
     rows = AgendamentoLigacao.query.filter_by(data_ligacao=selected, status="confirmado").all()
     usage = {slot: 0 for slot in CALL_SLOTS}
@@ -131,6 +151,9 @@ def agendar_visita():
     if count_day >= 5:
         text = f"Olá! Vi que o dia {selected_date.strftime('%d/%m/%Y')} está lotado. Gostaria de verificar disponibilidade para visitar o acolhido {paciente.nome_completo}."
         return render_template("erro.html", mensagem="Este dia está lotado para visitas.", whatsapp=whatsapp_link(current_app.config["CT_WHATSAPP"], text))
+    active_visit = active_future_visit_for_patient(paciente.id)
+    if active_visit:
+        return render_template("erro.html", mensagem=f"Este acolhido já possui visita confirmada para {active_visit.data_visita.strftime('%d/%m/%Y')} às {active_visit.horario_inicio.strftime('%H:%M')}. Fale com a equipe para ajustar ou cancelar o agendamento existente.")
     if total_adultos > 5:
         return render_template("erro.html", mensagem="O limite é de 5 adultos por visita. Crianças não entram nesse limite.")
     if criancas > 2:
@@ -143,7 +166,7 @@ def agendar_visita():
         token_uuid=token,
         paciente_id=paciente.id,
         responsavel_nome=request.form["visitante_nome"].strip(),
-        responsavel_telefone=request.form["visitante_telefone"].strip(),
+        responsavel_telefone=request.form.get("visitante_telefone", "").strip(),
         parentesco=request.form["parentesco"].strip(),
         data_visita=selected_date,
         horario_inicio=start,
@@ -161,6 +184,8 @@ def agendar_visita():
 
 @bp.route("/agendar-ligacao", methods=["GET", "POST"])
 def agendar_ligacao():
+    if not ligacoes_enabled():
+        return render_template("erro.html", mensagem="O módulo de ligações foi reservado para a V3 e está em desenvolvimento.")
     if request.method == "GET":
         return render_template("agendar_ligacao.html", slots=CALL_SLOTS, datas=date_choices(CALL_DAYS, 14), parentescos=PARENTESCOS)
 
@@ -214,7 +239,7 @@ def sucesso(tipo, token):
     item = AgendamentoVisita.query.filter_by(token_uuid=token).first() if tipo == "visita" else AgendamentoLigacao.query.filter_by(token_uuid=token).first_or_404()
     if tipo == "visita":
         item = AgendamentoVisita.query.filter_by(token_uuid=token).first_or_404()
-        text = f"Olá! Novo agendamento de visita:%0APaciente: {item.paciente.nome_completo}%0AResponsável: {item.responsavel_nome} ({item.parentesco}) - {item.responsavel_telefone}%0AData: {item.data_visita.strftime('%d/%m/%Y')} às {item.horario_inicio.strftime('%H:%M')}"
+        text = f"Olá! Novo agendamento de visita:%0APaciente: {item.paciente.nome_completo}%0AResponsável: {item.responsavel_nome} ({item.parentesco})%0AAcompanhantes: {companion_names(item)}%0AData: {item.data_visita.strftime('%d/%m/%Y')} às {item.horario_inicio.strftime('%H:%M')}"
         links = {"ct": f"https://wa.me/{current_app.config['CT_WHATSAPP']}?text={text}"}
     else:
         text = f"Olá! Agendamento de ligação:%0APaciente: {item.paciente.nome_completo}%0ASolicitante: {item.nome_solicitante} ({item.grau_parentesco})%0AData: {item.data_ligacao.strftime('%d/%m/%Y')} às {item.horario}%0ATelefone para ligação: {item.telefone_solicitante}"
@@ -280,6 +305,7 @@ def admin_dashboard():
         "ligacoes_qua": AgendamentoLigacao.query.filter_by(data_ligacao=start_week + timedelta(days=2), status="confirmado").count(),
         "ligacoes_qui": AgendamentoLigacao.query.filter_by(data_ligacao=start_week + timedelta(days=3), status="confirmado").count(),
         "ligacoes_sex": AgendamentoLigacao.query.filter_by(data_ligacao=start_week + timedelta(days=4), status="confirmado").count(),
+        "ligacoes_enabled": ligacoes_enabled(),
     }
     visitas = AgendamentoVisita.query.order_by(AgendamentoVisita.data_visita, AgendamentoVisita.horario_inicio).limit(20).all()
     ligacoes = AgendamentoLigacao.query.order_by(AgendamentoLigacao.data_ligacao, AgendamentoLigacao.horario).limit(20).all()

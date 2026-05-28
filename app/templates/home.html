@@ -9,7 +9,7 @@
         <p class="lead">Organize horários, reduza conflitos e facilite o contato entre familiares, acolhidos e equipe.</p>
         <div class="d-flex flex-wrap gap-2">
           <a class="btn btn-primary btn-lg" href="{{ url_for('main.agendar_visita') }}">Agendar visita</a>
-          <a class="btn btn-warning btn-lg" href="{{ url_for('main.agendar_ligacao') }}">Agendar ligação</a>
+          <span class="btn btn-warning btn-lg disabled" aria-disabled="true">Ligações na V3</span>
           <a class="btn btn-outline-primary btn-lg" href="{{ url_for('main.meu_agendamento') }}">Meu agendamento</a>
         </div>
         <img class="hero-logo-small" src="{{ url_for('static', filename='img/logo-luz-da-vida.jpg') }}" alt="Logo Clínica Luz da Vida">
@@ -27,7 +27,7 @@
   <div class="container">
     <div class="row g-3">
       <div class="col-md-4"><div class="info-card"><strong>Visitas</strong><span>Sexta, sábado e domingo, das 10h às 16h.</span></div></div>
-      <div class="col-md-4"><div class="info-card"><strong>Ligações</strong><span>Quarta, quinta e sexta, em slots de 20 minutos.</span></div></div>
+      <div class="col-md-4"><div class="info-card"><strong>Ligações</strong><span>Em desenvolvimento para liberação na V3.</span></div></div>
       <div class="col-md-4"><div class="info-card"><strong>Sem login</strong><span>Acesso ao próprio agendamento pelo navegador usado.</span></div></div>
     </div>
   </div>

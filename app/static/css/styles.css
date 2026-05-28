@@ -181,6 +181,8 @@ textarea.form-control {
 .stat { padding: 18px; text-decoration: none; }
 .stat span { color: var(--muted); display: block; }
 .stat strong { color: var(--blue); font-size: 2rem; }
+.stat small { color: var(--muted); display: block; font-weight: 700; }
+.stat-muted { background: #f8fafc; }
 .table-panel h2 { color: var(--blue); font-size: 1.3rem; }
 .patient-row { border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px 16px; justify-content: space-between; padding: 12px 0; }
 .patient-row:last-child { border-bottom: 0; }
