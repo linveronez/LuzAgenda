@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: luz-agenda
+    name: Luz Agenda
     runtime: python
     plan: free
     region: oregon
@@ -10,7 +10,7 @@ services:
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: luzagenda-db
+          name: LuzAgenda
           property: connectionString
       - key: ENABLE_LIGACOES
         value: "false"
@@ -18,8 +18,8 @@ services:
         generateValue: true
 
 databases:
-  - name: luzagenda-db
+  - name: LuzAgenda
     plan: free
     region: oregon
-    databaseName: luzagenda
-    user: luzagenda_user
+    databaseName: luzagenda_db
+    user: luzagenda_db_user
