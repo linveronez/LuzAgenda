@@ -26,7 +26,10 @@
     <div class="table-panel">
       {% for p in pacientes %}
       <div class="patient-row">
-        <div><strong>{{ p.nome_completo }}</strong><span>{{ p.data_entrada.strftime("%d/%m/%Y") }} - {{ p.total_visitas }} visita(s), {{ p.total_ligacoes }} ligação(ões)</span></div>
+        <div>
+          <strong>{{ p.nome_completo }}</strong>{% if p.cadastro_ficticio %} <span class="badge text-bg-warning">Fictício</span>{% endif %}
+          <span>{{ p.data_entrada.strftime("%d/%m/%Y") }} - {{ p.total_visitas }} visita(s), {{ p.total_ligacoes }} ligação(ões)</span>
+        </div>
         <form method="post" action="{{ url_for('main.admin_paciente_status', paciente_id=p.id) }}" class="d-flex gap-2">
           <select name="status" class="form-select form-select-sm"><option value="ativo" {% if p.status == "ativo" %}selected{% endif %}>Ativo</option><option value="inativo" {% if p.status == "inativo" %}selected{% endif %}>Inativo</option></select>
           <button class="btn btn-sm btn-outline-primary">Salvar</button>

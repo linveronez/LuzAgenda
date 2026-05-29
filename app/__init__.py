@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import inspect, text
 from dotenv import load_dotenv
 import os
 
@@ -34,8 +35,16 @@ def create_app():
 
     with app.app_context():
         db.create_all()
+        ensure_schema()
 
     return app
+
+
+def ensure_schema():
+    columns = {column["name"] for column in inspect(db.engine).get_columns("pacientes")}
+    if "cadastro_ficticio" not in columns:
+        db.session.execute(text("ALTER TABLE pacientes ADD COLUMN cadastro_ficticio BOOLEAN NOT NULL DEFAULT FALSE"))
+        db.session.commit()
 
 
 app = create_app()

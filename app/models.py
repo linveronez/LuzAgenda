@@ -11,6 +11,7 @@ class Paciente(db.Model):
     status = db.Column(db.String(20), nullable=False, default="ativo")
     total_visitas = db.Column(db.Integer, nullable=False, default=0)
     total_ligacoes = db.Column(db.Integer, nullable=False, default=0)
+    cadastro_ficticio = db.Column(db.Boolean, nullable=False, default=False)
 
     visitas = db.relationship("AgendamentoVisita", backref="paciente", lazy=True)
     ligacoes = db.relationship("AgendamentoLigacao", backref="paciente", lazy=True)
