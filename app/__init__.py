@@ -22,7 +22,7 @@ def create_app():
         database_url = database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
     app.config["SQLALCHEMY_DATABASE_URI"] = database_url
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.config["ADMIN_PASSWORD"] = os.getenv("ADMIN_PASSWORD", "ctluzdavida2")
+    app.config["ADMIN_PASSWORD"] = os.getenv("ADMIN_PASSWORD", "luzadmin123")
     app.config["CT_WHATSAPP"] = os.getenv("CT_WHATSAPP", "5511947395960")
     app.config["CEL_ACOLHIDOS_1"] = os.getenv("CEL_ACOLHIDOS_1", "5511939219318")
     app.config["CEL_ACOLHIDOS_2"] = os.getenv("CEL_ACOLHIDOS_2", "5511992588976")
