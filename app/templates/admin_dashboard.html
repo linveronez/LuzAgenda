@@ -14,9 +14,9 @@
       <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.qui.isoformat()) }}"><span>Ligações quinta</span><strong>{{ stats.ligacoes_qui }}</strong></a>
       <a class="stat" href="{{ url_for('main.admin_agendamentos', tipo='ligacao', inicio=call_dates.sex.isoformat()) }}"><span>Ligações sexta</span><strong>{{ stats.ligacoes_sex }}</strong></a>
       {% else %}
-      <div class="stat stat-muted"><span>Ligações quarta</span><strong>V3</strong><small>Em desenvolvimento</small></div>
-      <div class="stat stat-muted"><span>Ligações quinta</span><strong>V3</strong><small>Em desenvolvimento</small></div>
-      <div class="stat stat-muted"><span>Ligações sexta</span><strong>V3</strong><small>Em desenvolvimento</small></div>
+      <div class="stat stat-muted"><span>Ligações quarta</span><strong>V2</strong><small>Em desenvolvimento</small></div>
+      <div class="stat stat-muted"><span>Ligações quinta</span><strong>V2</strong><small>Em desenvolvimento</small></div>
+      <div class="stat stat-muted"><span>Ligações sexta</span><strong>V2</strong><small>Em desenvolvimento</small></div>
       {% endif %}
     </div>
     <div class="row g-3 mt-2">

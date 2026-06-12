@@ -9,7 +9,7 @@ Acesse em produção: **https://luz-agenda.onrender.com**
 ## O que o sistema faz
 
 - Agendamento público de **visitas** (sexta, sábado e domingo) sem necessidade de login
-- Módulo de **ligações** preservado no roadmap, bloqueado para liberação na V3
+- Módulo de **ligações** preservado no roadmap, bloqueado para liberação na V2
 - Controle automático de **carência**, **vagas por dia**, **limite de acompanhantes** e **cota semanal de ligações**
 - **Painel administrativo** protegido por senha para gestão de pacientes e agendamentos
 - **Notificação via WhatsApp** com mensagem pré-formatada ao confirmar agendamento
@@ -65,7 +65,7 @@ SECRET_KEY=troque-por-chave-segura
 ADMIN_PASSWORD=sua-senha-admin
 DATABASE_URL=sqlite:///luzagenda.db       # dev
 # DATABASE_URL=postgresql://...           # produção obrigatória no Render
-ENABLE_LIGACOES=false                     # V3
+ENABLE_LIGACOES=false                     # V2
 CT_WHATSAPP=5511947395960                 # número da CT (visitas)
 CEL_ACOLHIDOS_1=5511939219318            # celular 1 (ligações)
 CEL_ACOLHIDOS_2=5511992588976            # celular 2 (ligações)
@@ -123,7 +123,7 @@ LuzAgenda/
   - Se os 30 dias caírem em dia de semana, libera o final de semana anterior (mínimo 27 dias)
 - Lotação: redireciona para WhatsApp da CT com mensagem pronta
 
-### Ligações (V3)
+### Ligações (V2)
 - Módulo temporariamente bloqueado na interface pública
 - Cards do painel administrativo exibem o status de desenvolvimento
 
@@ -157,7 +157,7 @@ Regras planejadas:
 - Gráficos no dashboard (visitas e ligações por semana/mês)
 - Tela de busca de agendamento por telefone do responsável
 
-### V3
+### V2
 - Liberação do módulo de ligações
 - Níveis de acesso (admin / equipe terapêutica)
 - Lembrete automático 24h antes via WhatsApp

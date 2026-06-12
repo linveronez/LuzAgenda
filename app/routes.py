@@ -109,7 +109,7 @@ def api_visitas_disponibilidade():
 @bp.get("/api/ligacoes/slots")
 def api_ligacoes_slots():
     if not ligacoes_enabled():
-        return jsonify({"erro": "Modulo de ligacoes planejado para a V3."}), 503
+        return jsonify({"erro": "Modulo de ligacoes planejado para a V2."}), 503
     selected = parse_date(request.args["data"])
     rows = AgendamentoLigacao.query.filter_by(data_ligacao=selected, status="confirmado").all()
     usage = {slot: 0 for slot in CALL_SLOTS}
@@ -185,7 +185,7 @@ def agendar_visita():
 @bp.route("/agendar-ligacao", methods=["GET", "POST"])
 def agendar_ligacao():
     if not ligacoes_enabled():
-        return render_template("erro.html", mensagem="O módulo de ligações foi reservado para a V3 e está em desenvolvimento.")
+        return render_template("erro.html", mensagem="O módulo de ligações foi reservado para a V2 e está em desenvolvimento.")
     if request.method == "GET":
         return render_template("agendar_ligacao.html", slots=CALL_SLOTS, datas=date_choices(CALL_DAYS, 14), parentescos=PARENTESCOS)
 
